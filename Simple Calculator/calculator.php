@@ -1,3 +1,41 @@
+<?php
+    if (isset($_POST['calculate'])) {
+        $num1      = $_POST['num1'];
+        $num2      = $_POST['num2'];
+        $operation = $_POST['operation'];
+        $result    = null;
+
+        switch ($operation) {
+            case 'add':
+                $result = $num1 + $num2;
+                break;
+            case 'subtract':
+                $result = $num1 - $num2;
+                break;
+            case 'multiply':
+                $result = $num1 * $num2;
+                break;
+            case 'divide':
+                if ($num2 != 0) {
+                    $result = $num1 / $num2;
+                } else {
+                    $result = "Cannot divide by ZERO!";
+                }
+                break;
+            default:
+                $result = "Invalid operation!";
+                break;
+        }
+        // Store the result in a session or URL parameter
+        session_start();
+        $_SESSION['result'] = $result;
+
+        // Redirect to the same page
+        header("Location: " . $_SERVER['PHP_SELF']);
+        exit();
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,36 +58,13 @@
         </select>
         <input type="submit" name="calculate" value="Calculate">
     </form>
-
     <?php
-        if (isset($_POST['calculate'])) {
-            $num1      = $_POST['num1'];
-            $num2      = $_POST['num2'];
-            $operation = $_POST['operation'];
-            $result    = null;
-
-            switch ($operation) {
-                case 'add':
-                    $result = $num1 + $num2;
-                    break;
-                case 'subtract':
-                    $result = $num1 - $num2;
-                    break;
-                case 'multiply':
-                    $result = $num1 * $num2;
-                    break;
-                case 'divide':
-                    if ($num2 != 0) {
-                        $result = $num1 / $num2;
-                    } else {
-                        $result = "Cannot divide by ZERO!";
-                    }
-                    break;
-                default:
-                    $result = "Invalid operation!";
-                    break;
-            }
-            echo "<div class='result'><strong>Result:</strong>$result</div>";
+        // Display the result from the session
+        session_start();
+        if (isset($_SESSION['result'])) {
+            echo "<div class='result'><strong>Result:</strong> " . $_SESSION['result'] . "</div>";
+            // Clear the result from the session
+            unset($_SESSION['result']);
         }
     ?>
 </div>
