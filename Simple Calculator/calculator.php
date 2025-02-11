@@ -62,7 +62,7 @@
         // Display the result from the session
         session_start();
         if (isset($_SESSION['result'])) {
-            echo "<div class='result'><strong>Result:</strong> " . $_SESSION['result'] . "</div>";
+            echo "<div class='result'><strong>Result:</strong> " . round($_SESSION['result'], 3) . "</div>";
             // Clear the result from the session
             unset($_SESSION['result']);
         }
